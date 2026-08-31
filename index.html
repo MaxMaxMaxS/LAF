@@ -921,7 +921,7 @@
 
 <!-- ============ HERO ============ -->
 <header class="hero grain" id="pocetna">
-  <video autoplay muted loop playsinline id="hero-video" poster="img/brand-hero.jpg">
+  <video autoplay muted loop playsinline webkit-playsinline="true" preload="auto" id="hero-video" poster="img/brand-hero.jpg">
     <source src="video/hero.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
@@ -1270,6 +1270,23 @@
     });
     video.addEventListener('error', function () {
       video.remove();
+    });
+
+    function tryPlay() {
+      var p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(function () {});
+    }
+    tryPlay();
+
+    // iOS Safari (Low Power Mode / Auto-Play setting) can silently block
+    // autoplay even with muted+playsinline — retry on the first tap/scroll,
+    // which counts as a user gesture and is allowed to start playback.
+    function retryOnGesture() {
+      if (!video.paused) return;
+      tryPlay();
+    }
+    ['touchstart', 'click', 'scroll'].forEach(function (evt) {
+      document.addEventListener(evt, retryOnGesture, { once: true, passive: true });
     });
   })();
 
