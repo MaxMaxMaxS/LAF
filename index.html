@@ -466,6 +466,30 @@
   }
   .discretion-card img { width: 100%; display: block; }
 
+  /* ---------- Privatni eventi ---------- */
+  .private-events {
+    background: var(--black);
+    overflow: hidden;
+  }
+  .private-events::before {
+    content: '';
+    position: absolute;
+    top: -10%; left: -15%;
+    width: 60%; height: 85%;
+    background: radial-gradient(ellipse at center, var(--teal) 0%, transparent 70%);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .private-events-card {
+    position: relative;
+    max-width: 440px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    box-shadow: 0 25px 70px rgba(0,0,0,0.55);
+    overflow: hidden;
+  }
+  .private-events-card img { width: 100%; display: block; }
+
   /* ---------- Radno vrijeme / Dress code ---------- */
   .hours-dress {
     background: var(--black-soft);
@@ -873,6 +897,7 @@
     .about-image img { height: 380px; }
 
     .discretion-card { max-width: 300px; }
+    .private-events-card { max-width: 320px; }
 
     .panels { grid-template-columns: 1fr; gap: 24px; }
     .panel { padding: 44px 30px; }
@@ -915,6 +940,7 @@
   <a href="#diskrecija">Diskrecija</a>
   <a href="#paketi">Paketi</a>
   <a href="https://qr.master-fb.com/MV5NRVDM" target="_blank" rel="noopener">Cjenik</a>
+  <a href="#eventi">Eventi</a>
   <a href="#galerija">Galerija</a>
   <a href="#kontakt">Kontakt</a>
 </div>
@@ -1083,6 +1109,23 @@
   </div>
 </section>
 
+<!-- ============ PRIVATNI EVENTI ============ -->
+<section class="private-events section-pad" id="eventi">
+  <div class="container">
+    <div class="section-head">
+      <div class="tagline reveal">&mdash; Najam prostora &mdash;</div>
+      <h2 class="serif reveal">&bdquo;Vaš event, naš prostor.&ldquo;</h2>
+    </div>
+    <div class="private-events-card reveal">
+      <img src="img/LAF-customevent.png" alt="Najam prostora LAF-a za privatne evente i domjenke — svečani ambijent po željama, prilagođeni jelovnici, potpuno opremljen bar, glazba uživo ili DJ, besplatan parking, profesionalno osoblje, garderoba i profesionalno ozvučenje, moguće manje ili veće grupe, prostor za do 350 gostiju." loading="lazy">
+    </div>
+    <div class="packages-cta reveal">
+      <p>Za upit oko najma prostora javite nam se putem WhatsAppa ili telefona.</p>
+      <a href="https://wa.me/38598555511" target="_blank" rel="noopener" class="btn btn-gold">Upit za event</a>
+    </div>
+  </div>
+</section>
+
 <!-- ============ GALERIJA ============ -->
 <section class="gallery section-pad" id="galerija">
   <div class="container">
@@ -1144,6 +1187,10 @@
           <span class="label">Instagram</span>
           <a class="value" href="https://www.instagram.com/laf__club/" target="_blank" rel="noopener">@laf__club</a>
         </div>
+        <div class="row">
+          <span class="label">TikTok</span>
+          <a class="value" href="https://www.tiktok.com/@laf.nightclub" target="_blank" rel="noopener">@laf.nightclub</a>
+        </div>
       </div>
       <div class="contact-hours reveal">
         Petak i subota <span>22:00 &ndash; 04:00</span> &mdash; ostali dani zatvoreno
@@ -1151,6 +1198,7 @@
       <div class="contact-buttons reveal">
         <a href="tel:+38598555511" class="btn btn-gold">Rezerviraj telefonom</a>
         <a href="https://wa.me/38598555511" target="_blank" rel="noopener" class="btn btn-outline-gold">WhatsApp</a>
+        <a href="https://www.google.com/maps/reserve/v/dine/c/3FbVM8Hkkh0?source=pa&amp;opi=89978449&amp;hl=hr-HR" target="_blank" rel="noopener" class="btn btn-outline-gold">Google rezervacija</a>
         <a href="https://www.instagram.com/laf__club/" target="_blank" rel="noopener" class="btn btn-outline-white">Instagram</a>
       </div>
     </div>
@@ -1168,6 +1216,7 @@
       <div class="footer-address">Trnjanska cesta 117, Zagreb &mdash; +385 98 5555 11</div>
       <div class="footer-socials">
         <a href="https://www.instagram.com/laf__club/" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+        <a href="https://www.tiktok.com/@laf.nightclub" target="_blank" rel="noopener" aria-label="TikTok">TT</a>
         <a href="https://wa.me/38598555511" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
       </div>
     </div>
@@ -1179,6 +1228,7 @@
           <li><a href="#iskustvo">Klub</a></li>
           <li><a href="#diskrecija">Diskrecija</a></li>
           <li><a href="#paketi">Paketi</a></li>
+          <li><a href="#eventi">Eventi</a></li>
           <li><a href="#galerija">Galerija</a></li>
           <li><a href="#kontakt">Kontakt</a></li>
         </ul>
