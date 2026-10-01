@@ -2,7 +2,7 @@
 <html lang="hr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>LAF Lost &amp; Found | Restaurant &amp; Nightclub Zagreb</title>
 <meta name="description" content="Restoran i noćni klub u Zagrebu. Trnjanska cesta 117. Petkom i subotom 22:00 - 04:00. Diskrecija zajamčena. Rezervacije: +385 98 5555 11. Dress code: chic & elegant.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -877,6 +877,74 @@
     box-shadow: 0 6px 30px rgba(0,0,0,0.6);
   }
 
+  /* ---------- Jezik (modal + prekidac) ---------- */
+  .lang-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    background: rgba(7,7,7,0.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  .lang-modal.open { opacity: 1; visibility: visible; }
+  .lang-modal-box {
+    border: 1px solid var(--border);
+    background: var(--black-card);
+    padding: 56px 44px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+    max-width: 380px;
+  }
+  .lang-modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--white);
+    line-height: 1.4;
+  }
+  .lang-modal-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+
+  .lang-switch {
+    position: fixed;
+    top: 24px;
+    right: 76px;
+    z-index: 1002;
+    display: flex;
+    border: 1px solid var(--border);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    overflow: hidden;
+    transition: top 0.4s ease;
+  }
+  .nav.scrolled ~ .lang-switch,
+  .nav.scrolled + .lang-switch { top: 18px; }
+  .lang-switch button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+  }
+  .lang-switch button.active { background: var(--gold); color: var(--black); }
+
+  body.lang-en .gallery-item::after { content: 'View on Instagram'; }
+
+  @media (max-width: 768px) {
+    .lang-switch { top: 18px; right: 66px; }
+    .lang-switch button { padding: 7px 10px; }
+  }
+
   /* ---------- Responsive ---------- */
   @media (max-width: 1024px) {
     .services-grid { grid-template-columns: repeat(5, 260px); overflow-x: auto; padding-bottom: 16px; }
@@ -924,25 +992,40 @@
 
 <div class="cursor-dot" id="cursor"></div>
 
+<!-- ============ ODABIR JEZIKA ============ -->
+<div class="lang-modal" id="langModal">
+  <div class="lang-modal-box">
+    <div class="lang-modal-title">Odaberite jezik<br>Choose your language</div>
+    <div class="lang-modal-buttons">
+      <button type="button" class="btn btn-gold" data-lang-choice="hr">Hrvatski</button>
+      <button type="button" class="btn btn-outline-gold" data-lang-choice="en">English</button>
+    </div>
+  </div>
+</div>
+<div class="lang-switch" id="langSwitch">
+  <button type="button" data-lang-choice="hr">HR</button>
+  <button type="button" data-lang-choice="en">EN</button>
+</div>
+
 <!-- ============ NAVIGACIJA ============ -->
 <nav class="nav" id="nav">
   <a href="#pocetna" class="nav-logo">
     <img src="img/LAF-logo.png" alt="LAF Lost &amp; Found logo">
   </a>
-  <button class="hamburger" id="hamburger" aria-label="Otvori izbornik">
+  <button class="hamburger" id="hamburger" aria-label="Otvori izbornik" data-i18n-aria="ariaOpenMenu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#pocetna">Početna</a>
-  <a href="#iskustvo">Klub</a>
-  <a href="#diskrecija">Diskrecija</a>
-  <a href="#paketi">Paketi</a>
-  <a href="https://qr.master-fb.com/MV5NRVDM" target="_blank" rel="noopener">Cjenik</a>
-  <a href="#eventi">Eventi</a>
-  <a href="#galerija">Galerija</a>
-  <a href="#kontakt">Kontakt</a>
+  <a href="#pocetna" data-i18n="navHome">Početna</a>
+  <a href="#iskustvo" data-i18n="navClub">Klub</a>
+  <a href="#diskrecija" data-i18n="navDiscretion">Diskrecija</a>
+  <a href="#paketi" data-i18n="navPackages">Paketi</a>
+  <a href="https://qr.master-fb.com/MV5NRVDM" target="_blank" rel="noopener" data-i18n="navPricelist">Cjenik</a>
+  <a href="#eventi" data-i18n="navEvents">Eventi</a>
+  <a href="#galerija" data-i18n="navGallery">Galerija</a>
+  <a href="#kontakt" data-i18n="navContact">Kontakt</a>
 </div>
 
 <!-- ============ HERO ============ -->
@@ -954,17 +1037,17 @@
   <div class="hero-overlay-teal"></div>
 
   <div class="hero-content">
-    <div class="hero-tagline">Zagreb &mdash; Hrvatska</div>
+    <div class="hero-tagline" data-i18n="heroLocation">Zagreb &mdash; Hrvatska</div>
     <hr class="gold-line">
     <h1>Lost &amp; Found</h1>
     <div class="hero-restaurant-tag">Restaurant &amp; Nightclub</div>
-    <div class="hero-sub">&bdquo;Taste the nightlife.&ldquo;</div>
+    <div class="hero-sub" data-i18n="heroQuote">&bdquo;Taste the nightlife.&ldquo;</div>
     <hr class="gold-line">
     <div class="hero-pills">
-      <a href="#usluge" class="pill">Klub</a>
-      <a href="#paketi" class="pill">Paketi</a>
-      <a href="https://qr.master-fb.com/MV5NRVDM" target="_blank" rel="noopener" class="pill">Cjenik</a>
-      <a href="#kontakt" class="pill">Rezervacije</a>
+      <a href="#usluge" class="pill" data-i18n="navClub">Klub</a>
+      <a href="#paketi" class="pill" data-i18n="navPackages">Paketi</a>
+      <a href="https://qr.master-fb.com/MV5NRVDM" target="_blank" rel="noopener" class="pill" data-i18n="navPricelist">Cjenik</a>
+      <a href="#kontakt" class="pill" data-i18n="navReservations">Rezervacije</a>
     </div>
   </div>
 
@@ -976,31 +1059,31 @@
   <div class="container">
     <div class="about-grid">
       <div class="about-text">
-        <div class="tagline reveal">&mdash; Restoran &amp; noćni klub &mdash;</div>
-        <h2 class="serif reveal">&bdquo;Gdje se noćni Zagreb pronalazi i gubi.&ldquo;</h2>
-        <p class="reveal">LAF &mdash; Lost &amp; Found nije samo klub, nego restoran i noćni klub u jednom. Iskustvo počinje ulaskom, a završava tek prvim jutarnjim svjetlom &mdash; elegantna publika, nezaboravna glazba i bottle service koji definira večer.</p>
+        <div class="tagline reveal" data-i18n="aboutTagline">&mdash; Restoran &amp; noćni klub &mdash;</div>
+        <h2 class="serif reveal" data-i18n="aboutHeading">&bdquo;Gdje se noćni Zagreb pronalazi i gubi.&ldquo;</h2>
+        <p class="reveal" data-i18n="aboutText">LAF &mdash; Lost &amp; Found nije samo klub, nego restoran i noćni klub u jednom. Iskustvo počinje ulaskom, a završava tek prvim jutarnjim svjetlom &mdash; elegantna publika, nezaboravna glazba i bottle service koji definira večer.</p>
         <hr class="about-line reveal">
         <div class="about-stats reveal">
           <div class="stat">
             <div class="stat-num">31.000</div>
-            <div class="stat-label">pratitelja na Instagramu</div>
+            <div class="stat-label" data-i18n="statFollowers">pratitelja na Instagramu</div>
           </div>
           <div class="stat">
             <div class="stat-num">4,6</div>
-            <div class="stat-label">ocjena na Google Mapsu</div>
+            <div class="stat-label" data-i18n="statRating">ocjena na Google Mapsu</div>
           </div>
           <div class="stat">
             <div class="stat-num">22:00 &ndash; 04:00</div>
-            <div class="stat-label">petkom i subotom</div>
+            <div class="stat-label" data-i18n="statFriSat">petkom i subotom</div>
           </div>
           <div class="stat">
             <div class="stat-num">50+ EUR</div>
-            <div class="stat-label">po osobi</div>
+            <div class="stat-label" data-i18n="statPerPerson">po osobi</div>
           </div>
         </div>
       </div>
       <div class="about-image reveal">
-        <img src="img/photo_01.jpg" alt="Interijer kluba LAF s postavljenim stolovima i klupskom rasvjetom" loading="lazy">
+        <img src="img/photo_01.jpg" alt="Interijer kluba LAF s postavljenim stolovima i klupskom rasvjetom" loading="lazy" data-i18n-alt="altAbout">
       </div>
     </div>
   </div>
@@ -1010,11 +1093,11 @@
 <section class="discretion section-pad" id="diskrecija">
   <div class="container">
     <div class="section-head">
-      <div class="tagline reveal">&mdash; Naš standard &mdash;</div>
-      <h2 class="serif reveal">&bdquo;Ono što se dogodi u LAF-u, ostaje u LAF-u.&ldquo;</h2>
+      <div class="tagline reveal" data-i18n="discTagline">&mdash; Naš standard &mdash;</div>
+      <h2 class="serif reveal" data-i18n="discHeading">&bdquo;Ono što se dogodi u LAF-u, ostaje u LAF-u.&ldquo;</h2>
     </div>
     <div class="discretion-card reveal">
-      <img src="img/diskrecija.jpg" alt="LAF politika privatnosti gostiju: ne snimamo, ne objavljujemo i ne otkrivamo naše goste. LAF je mjesto koje ne pratiš, nego koje doživiš." loading="lazy">
+      <img src="img/diskrecija.jpg" alt="LAF politika privatnosti gostiju: ne snimamo, ne objavljujemo i ne otkrivamo naše goste. LAF je mjesto koje ne pratiš, nego koje doživiš." loading="lazy" data-i18n-alt="altDiscretion">
     </div>
   </div>
 </section>
@@ -1024,27 +1107,27 @@
   <div class="container">
     <div class="panels">
       <div class="panel reveal">
-        <h3>Radno vrijeme</h3>
+        <h3 data-i18n="hoursTitle">Radno vrijeme</h3>
         <table class="hours-table">
           <tr>
-            <td>Petak</td>
+            <td data-i18n="dayFri">Petak</td>
             <td>22:00 &ndash; 04:00</td>
           </tr>
           <tr>
-            <td>Subota</td>
+            <td data-i18n="daySat">Subota</td>
             <td>22:00 &ndash; 04:00</td>
           </tr>
           <tr class="closed">
-            <td>Ostali dani</td>
-            <td>Zatvoreno</td>
+            <td data-i18n="dayOther">Ostali dani</td>
+            <td data-i18n="closed">Zatvoreno</td>
           </tr>
         </table>
-        <div class="panel-note">Vrata se otvaraju u 22 h</div>
+        <div class="panel-note" data-i18n="doorsOpen">Vrata se otvaraju u 22 h</div>
       </div>
       <div class="panel reveal">
         <h3>Dress code</h3>
-        <div class="dress-quote">&bdquo;Be chic &amp; elegant.&ldquo;</div>
-        <p class="dress-desc">Ulaz je privilegija. Uklopite se u noć &mdash; elegancija je jedina ulaznica koja se ne kupuje.</p>
+        <div class="dress-quote" data-i18n="dressQuote">&bdquo;Be chic &amp; elegant.&ldquo;</div>
+        <p class="dress-desc" data-i18n="dressDesc">Ulaz je privilegija. Uklopite se u noć &mdash; elegancija je jedina ulaznica koja se ne kupuje.</p>
       </div>
     </div>
   </div>
@@ -1054,20 +1137,20 @@
 <section class="packages section-pad" id="paketi">
   <div class="container">
     <div class="section-head">
-      <div class="tagline reveal">&mdash; Ekskluzivna ponuda &mdash;</div>
-      <h2 class="serif reveal">Paketi petkom i subotom</h2>
+      <div class="tagline reveal" data-i18n="pkgTagline">&mdash; Ekskluzivna ponuda &mdash;</div>
+      <h2 class="serif reveal" data-i18n="pkgHeading">Paketi petkom i subotom</h2>
     </div>
     <div class="packages-grid">
       <div class="package-card reveal">
-        <img src="img/paketi-petak.jpg" alt="Paketi petkom u LAF-u — Paket 1 za 4/6 osoba: 2 boce, 10 sokova, 1 plata po izboru, redovna cijena 310€, posebna cijena 250€. Paket 2 za 8 osoba: 4 boce, 20 sokova, 2 plate, redovna cijena 620€, posebna cijena 480€. Premium paket: 2 boce (Grey Goose vodka, Gentleman Jack whiskey), 10 sokova, 1 plata, redovna cijena 410€, posebna cijena 370€." loading="lazy">
+        <img src="img/paketi-petak.jpg" alt="Paketi petkom u LAF-u — Paket 1 za 4/6 osoba: 2 boce, 10 sokova, 1 plata po izboru, redovna cijena 310€, posebna cijena 250€. Paket 2 za 8 osoba: 4 boce, 20 sokova, 2 plate, redovna cijena 620€, posebna cijena 480€. Premium paket: 2 boce (Grey Goose vodka, Gentleman Jack whiskey), 10 sokova, 1 plata, redovna cijena 410€, posebna cijena 370€." loading="lazy" data-i18n-alt="altPkgFri">
       </div>
       <div class="package-card reveal">
-        <img src="img/paketi-subota.jpg" alt="Premium paket subotom u LAF-u — 1 plata po izboru, 2 boce po izboru (Grey Goose vodka, Gentleman Jack whiskey), 10 sokova, redovna cijena 410€, posebna cijena 370€." loading="lazy">
+        <img src="img/paketi-subota.jpg" alt="Premium paket subotom u LAF-u — 1 plata po izboru, 2 boce po izboru (Grey Goose vodka, Gentleman Jack whiskey), 10 sokova, redovna cijena 410€, posebna cijena 370€." loading="lazy" data-i18n-alt="altPkgSat">
       </div>
     </div>
     <div class="packages-cta reveal">
-      <p>Za rezervaciju paketa javite nam se putem WhatsAppa ili telefona.</p>
-      <a href="tel:+38598555511" class="btn btn-gold">Rezerviraj stol</a>
+      <p data-i18n="pkgCtaText">Za rezervaciju paketa javite nam se putem WhatsAppa ili telefona.</p>
+      <a href="tel:+38598555511" class="btn btn-gold" data-i18n="btnBookTable">Rezerviraj stol</a>
     </div>
   </div>
 </section>
@@ -1076,34 +1159,34 @@
 <section class="services section-pad" id="usluge">
   <div class="container">
     <div class="section-head">
-      <div class="tagline reveal">&mdash; Što nudimo &mdash;</div>
-      <h2 class="serif reveal" style="font-size: clamp(32px, 4vw, 48px);">&bdquo;Iskustvo u pet poglavlja.&ldquo;</h2>
+      <div class="tagline reveal" data-i18n="servTagline">&mdash; Što nudimo &mdash;</div>
+      <h2 class="serif reveal" style="font-size: clamp(32px, 4vw, 48px);" data-i18n="servHeading">&bdquo;Iskustvo u pet poglavlja.&ldquo;</h2>
     </div>
     <div class="services-grid">
       <div class="service-card reveal">
         <div class="num">I.</div>
         <h3>Party</h3>
-        <p>Energija koja počinje u 22 h i ne staje do jutarnjeg svitanja. Glazba, svjetla i publika koja zna kako se pleše.</p>
+        <p data-i18n="svcParty">Energija koja počinje u 22 h i ne staje do jutarnjeg svitanja. Glazba, svjetla i publika koja zna kako se pleše.</p>
       </div>
       <div class="service-card reveal">
         <div class="num">II.</div>
         <h3>Bottle Service</h3>
-        <p>VIP tretman za posebne večeri. Odaberite svoju bocu i prepustite nam ostatak.</p>
+        <p data-i18n="svcBottle">VIP tretman za posebne večeri. Odaberite svoju bocu i prepustite nam ostatak.</p>
       </div>
       <div class="service-card reveal">
         <div class="num">III.</div>
         <h3>Food</h3>
-        <p>Restoranska ponuda koja poslužuje i one koji dolaze gladni. Hrana dostupna uz noć.</p>
+        <p data-i18n="svcFood">Restoranska ponuda koja poslužuje i one koji dolaze gladni. Hrana dostupna uz noć.</p>
       </div>
       <div class="service-card reveal">
         <div class="num">IV.</div>
-        <h3>Animatori</h3>
-        <p>Naša ekipa osigurava da atmosfera nikad ne padne. Sparkler spektakli i prava zabava.</p>
+        <h3 data-i18n="svcAnimTitle">Animatori</h3>
+        <p data-i18n="svcAnim">Naša ekipa osigurava da atmosfera nikad ne padne. Sparkler spektakli i prava zabava.</p>
       </div>
       <div class="service-card reveal">
         <div class="num">V.</div>
         <h3>Place</h3>
-        <p>Trnjanska cesta 117. Interijer koji postavlja pozornicu za nezaboravne noći.</p>
+        <p data-i18n="svcPlace">Trnjanska cesta 117. Interijer koji postavlja pozornicu za nezaboravne noći.</p>
       </div>
     </div>
   </div>
@@ -1113,15 +1196,15 @@
 <section class="private-events section-pad" id="eventi">
   <div class="container">
     <div class="section-head">
-      <div class="tagline reveal">&mdash; Najam prostora &mdash;</div>
-      <h2 class="serif reveal">&bdquo;Vaš event, naš prostor.&ldquo;</h2>
+      <div class="tagline reveal" data-i18n="eventsTagline">&mdash; Najam prostora &mdash;</div>
+      <h2 class="serif reveal" data-i18n="eventsHeading">&bdquo;Vaš event, naš prostor.&ldquo;</h2>
     </div>
     <div class="private-events-card reveal">
-      <img src="img/LAF-customevent.png" alt="Najam prostora LAF-a za privatne evente i domjenke — svečani ambijent po željama, prilagođeni jelovnici, potpuno opremljen bar, glazba uživo ili DJ, besplatan parking, profesionalno osoblje, garderoba i profesionalno ozvučenje, moguće manje ili veće grupe, prostor za do 350 gostiju." loading="lazy">
+      <img src="img/LAF-customevent.png" alt="Najam prostora LAF-a za privatne evente i domjenke — svečani ambijent po željama, prilagođeni jelovnici, potpuno opremljen bar, glazba uživo ili DJ, besplatan parking, profesionalno osoblje, garderoba i profesionalno ozvučenje, moguće manje ili veće grupe, prostor za do 350 gostiju." loading="lazy" data-i18n-alt="altEvents">
     </div>
     <div class="packages-cta reveal">
-      <p>Za upit oko najma prostora javite nam se putem WhatsAppa ili telefona.</p>
-      <a href="https://wa.me/38598555511" target="_blank" rel="noopener" class="btn btn-gold">Upit za event</a>
+      <p data-i18n="eventsCtaText">Za upit oko najma prostora javite nam se putem WhatsAppa ili telefona.</p>
+      <a href="https://wa.me/38598555511" target="_blank" rel="noopener" class="btn btn-gold" data-i18n="btnEventInquiry">Upit za event</a>
     </div>
   </div>
 </section>
@@ -1130,33 +1213,33 @@
 <section class="gallery section-pad" id="galerija">
   <div class="container">
     <div class="section-head">
-      <div class="gallery-title reveal">Galerija</div>
-      <div class="gallery-sub reveal"><a href="https://www.instagram.com/laf__club/" target="_blank" rel="noopener">@laf__club</a> na Instagramu</div>
+      <div class="gallery-title reveal" data-i18n="navGallery">Galerija</div>
+      <div class="gallery-sub reveal"><a href="https://www.instagram.com/laf__club/" target="_blank" rel="noopener">@laf__club</a> <span data-i18n="onInstagram">na Instagramu</span></div>
     </div>
     <div class="gallery-grid" id="galleryGrid">
-      <a class="gallery-item wide reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil">
-        <img src="img/photo_02.jpg" alt="Sparkler spektakl na plesnom podiju kluba LAF" loading="lazy">
+      <a class="gallery-item wide reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil" data-i18n-aria="ariaOpenInstagram">
+        <img src="img/photo_02.jpg" alt="Sparkler spektakl na plesnom podiju kluba LAF" loading="lazy" data-i18n-alt="altGal2">
       </a>
-      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil">
-        <img src="img/photo_03.jpg" alt="Gošće kluba pod ljubičastom rasvjetom" loading="lazy">
+      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil" data-i18n-aria="ariaOpenInstagram">
+        <img src="img/photo_03.jpg" alt="Gošće kluba pod ljubičastom rasvjetom" loading="lazy" data-i18n-alt="altGal3">
       </a>
-      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil">
-        <img src="img/photo_04.jpg" alt="Gošće pod magenta svjetlima kluba LAF" loading="lazy">
+      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil" data-i18n-aria="ariaOpenInstagram">
+        <img src="img/photo_04.jpg" alt="Gošće pod magenta svjetlima kluba LAF" loading="lazy" data-i18n-alt="altGal4">
       </a>
-      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil">
-        <img src="img/photo_05.jpg" alt="Bottle service sa sparklerima i LED detaljima" loading="lazy">
+      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil" data-i18n-aria="ariaOpenInstagram">
+        <img src="img/photo_05.jpg" alt="Bottle service sa sparklerima i LED detaljima" loading="lazy" data-i18n-alt="altGal5">
       </a>
-      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil">
-        <img src="img/photo_06.jpg" alt="Zlatni konfeti na zabavi u klubu" loading="lazy">
+      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil" data-i18n-aria="ariaOpenInstagram">
+        <img src="img/photo_06.jpg" alt="Zlatni konfeti na zabavi u klubu" loading="lazy" data-i18n-alt="altGal6">
       </a>
-      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil">
-        <img src="img/photo_07.jpg" alt="Elegantno odjevene gošće u klubu LAF" loading="lazy">
+      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil" data-i18n-aria="ariaOpenInstagram">
+        <img src="img/photo_07.jpg" alt="Elegantno odjevene gošće u klubu LAF" loading="lazy" data-i18n-alt="altGal7">
       </a>
-      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil">
-        <img src="img/photo_08.jpg" alt="Interijer kluba LAF s plavim svjetlosnim efektima" loading="lazy">
+      <a class="gallery-item reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil" data-i18n-aria="ariaOpenInstagram">
+        <img src="img/photo_08.jpg" alt="Interijer kluba LAF s plavim svjetlosnim efektima" loading="lazy" data-i18n-alt="altGal8">
       </a>
-      <a class="gallery-item mobile-hide reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil">
-        <img src="img/photo_09.jpg" alt="Gošće u noćnom izlasku u klubu LAF" loading="lazy">
+      <a class="gallery-item mobile-hide reveal" href="https://www.instagram.com/laf__club?igsh=MXF0eHU2cW13ajE3NA%3D%3D" target="_blank" rel="noopener" aria-label="Otvori LAF Instagram profil" data-i18n-aria="ariaOpenInstagram">
+        <img src="img/photo_09.jpg" alt="Gošće u noćnom izlasku u klubu LAF" loading="lazy" data-i18n-alt="altGal9">
       </a>
     </div>
   </div>
@@ -1166,22 +1249,22 @@
 <section class="contact section-pad grain" id="kontakt">
   <div class="container">
     <div class="contact-center">
-      <div class="tagline reveal">&mdash; Rezerviraj svoju noć &mdash;</div>
+      <div class="tagline reveal" data-i18n="contactTagline">&mdash; Rezerviraj svoju noć &mdash;</div>
       <h2 class="serif reveal">Trnjanska cesta 117, Zagreb</h2>
-      <p class="contact-sub reveal">Petak i subota. Vrata se otvaraju u 22 h. Mjesta su ograničena.</p>
+      <p class="contact-sub reveal" data-i18n="contactSub">Petak i subota. Vrata se otvaraju u 22 h. Mjesta su ograničena.</p>
       <hr class="gold-line reveal">
       <div class="contact-list reveal">
         <div class="row">
-          <span class="label">Adresa</span>
+          <span class="label" data-i18n="labelAddress">Adresa</span>
           <span class="value">Trnjanska cesta 117, 10000 Zagreb</span>
         </div>
         <div class="row">
-          <span class="label">Telefon</span>
+          <span class="label" data-i18n="labelPhone">Telefon</span>
           <a class="value" href="tel:+38598555511">+385 98 5555 11</a>
         </div>
         <div class="row">
-          <span class="label">Cjenik</span>
-          <a class="value" href="https://qr.master-fb.com/MV5NRVDM" target="_blank" rel="noopener">Pogledaj cjenik</a>
+          <span class="label" data-i18n="navPricelist">Cjenik</span>
+          <a class="value" href="https://qr.master-fb.com/MV5NRVDM" target="_blank" rel="noopener" data-i18n="viewPricelist">Pogledaj cjenik</a>
         </div>
         <div class="row">
           <span class="label">Instagram</span>
@@ -1193,12 +1276,12 @@
         </div>
       </div>
       <div class="contact-hours reveal">
-        Petak i subota <span>22:00 &ndash; 04:00</span> &mdash; ostali dani zatvoreno
+        <span data-i18n="friSatLabel">Petak i subota</span> <span>22:00 &ndash; 04:00</span> <span data-i18n="otherDaysClosedDash">&mdash; ostali dani zatvoreno</span>
       </div>
       <div class="contact-buttons reveal">
-        <a href="tel:+38598555511" class="btn btn-gold">Rezerviraj telefonom</a>
+        <a href="tel:+38598555511" class="btn btn-gold" data-i18n="btnCallBook">Rezerviraj telefonom</a>
         <a href="https://wa.me/38598555511" target="_blank" rel="noopener" class="btn btn-outline-gold">WhatsApp</a>
-        <a href="https://www.google.com/maps/reserve/v/dine/c/3FbVM8Hkkh0?source=pa&amp;opi=89978449&amp;hl=hr-HR" target="_blank" rel="noopener" class="btn btn-outline-gold">Google rezervacija</a>
+        <a href="https://www.google.com/maps/reserve/v/dine/c/3FbVM8Hkkh0?source=pa&amp;opi=89978449&amp;hl=hr-HR" target="_blank" rel="noopener" class="btn btn-outline-gold" data-i18n="btnGoogleReserve">Google rezervacija</a>
         <a href="https://www.instagram.com/laf__club/" target="_blank" rel="noopener" class="btn btn-outline-white">Instagram</a>
       </div>
     </div>
@@ -1212,7 +1295,7 @@
     <div class="footer-top">
       <div class="footer-logo">LAF</div>
       <div class="footer-sub">Lost &amp; Found &mdash; Restaurant &amp; Nightclub</div>
-      <div class="footer-tagline">&bdquo;Taste the nightlife.&ldquo;</div>
+      <div class="footer-tagline" data-i18n="heroQuote">&bdquo;Taste the nightlife.&ldquo;</div>
       <div class="footer-address">Trnjanska cesta 117, Zagreb &mdash; +385 98 5555 11</div>
       <div class="footer-socials">
         <a href="https://www.instagram.com/laf__club/" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
@@ -1222,24 +1305,24 @@
     </div>
     <div class="footer-cols">
       <div class="footer-col">
-        <h4>Brzi linkovi</h4>
+        <h4 data-i18n="quickLinks">Brzi linkovi</h4>
         <ul>
-          <li><a href="#pocetna">Početna</a></li>
-          <li><a href="#iskustvo">Klub</a></li>
-          <li><a href="#diskrecija">Diskrecija</a></li>
-          <li><a href="#paketi">Paketi</a></li>
-          <li><a href="#eventi">Eventi</a></li>
-          <li><a href="#galerija">Galerija</a></li>
-          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="#pocetna" data-i18n="navHome">Početna</a></li>
+          <li><a href="#iskustvo" data-i18n="navClub">Klub</a></li>
+          <li><a href="#diskrecija" data-i18n="navDiscretion">Diskrecija</a></li>
+          <li><a href="#paketi" data-i18n="navPackages">Paketi</a></li>
+          <li><a href="#eventi" data-i18n="navEvents">Eventi</a></li>
+          <li><a href="#galerija" data-i18n="navGallery">Galerija</a></li>
+          <li><a href="#kontakt" data-i18n="navContact">Kontakt</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Radno vrijeme</h4>
+        <h4 data-i18n="hoursTitle">Radno vrijeme</h4>
         <ul>
-          <li>Petak: 22:00 &ndash; 04:00</li>
-          <li>Subota: 22:00 &ndash; 04:00</li>
-          <li>Ostali dani: zatvoreno</li>
-          <li>Dress code: be chic &amp; elegant</li>
+          <li data-i18n="footerFri">Petak: 22:00 &ndash; 04:00</li>
+          <li data-i18n="footerSat">Subota: 22:00 &ndash; 04:00</li>
+          <li data-i18n="footerOther">Ostali dani: zatvoreno</li>
+          <li data-i18n="footerDress">Dress code: be chic &amp; elegant</li>
         </ul>
       </div>
     </div>
@@ -1249,7 +1332,7 @@
   </div>
 </footer>
 
-<a href="tel:+38598555511" class="fixed-cta">Rezerviraj</a>
+<a href="tel:+38598555511" class="fixed-cta" data-i18n="fixedCta">Rezerviraj</a>
 
 <script>
   // ---------- Custom cursor ----------
@@ -1338,6 +1421,142 @@
     ['touchstart', 'click', 'scroll'].forEach(function (evt) {
       document.addEventListener(evt, retryOnGesture, { once: true, passive: true });
     });
+  })();
+
+  // ---------- Jezik (HR / EN) ----------
+  (function () {
+    var EN = {
+      ariaOpenMenu: "Open menu",
+      navHome: "Home",
+      navClub: "Club",
+      navDiscretion: "Discretion",
+      navPackages: "Packages",
+      navPricelist: "Price List",
+      navEvents: "Events",
+      navGallery: "Gallery",
+      navContact: "Contact",
+      navReservations: "Reservations",
+      heroLocation: "Zagreb &mdash; Croatia",
+      heroQuote: "&ldquo;Taste the nightlife.&rdquo;",
+      aboutTagline: "&mdash; Restaurant &amp; Nightclub &mdash;",
+      aboutHeading: "&ldquo;Where Zagreb&rsquo;s nightlife finds itself &mdash; and loses itself.&rdquo;",
+      aboutText: "LAF &mdash; Lost &amp; Found isn&rsquo;t just a club, but a restaurant and nightclub in one. The experience begins the moment you walk in and lasts until the first morning light &mdash; an elegant crowd, unforgettable music, and bottle service that defines the night.",
+      statFollowers: "Instagram followers",
+      statRating: "Google rating",
+      statFriSat: "Fridays &amp; Saturdays",
+      statPerPerson: "per person",
+      altAbout: "LAF club interior with set tables and club lighting",
+      discTagline: "&mdash; Our Standard &mdash;",
+      discHeading: "&ldquo;What happens at LAF, stays at LAF.&rdquo;",
+      altDiscretion: "LAF guest privacy policy: we don’t film, publish, or reveal our guests. LAF isn’t a place you follow — it’s a place you experience.",
+      hoursTitle: "Opening Hours",
+      dayFri: "Friday",
+      daySat: "Saturday",
+      dayOther: "Other days",
+      closed: "Closed",
+      doorsOpen: "Doors open at 10 PM",
+      dressQuote: "&ldquo;Be chic &amp; elegant.&rdquo;",
+      dressDesc: "Entry is a privilege. Dress to match the night &mdash; elegance is the only ticket that can&rsquo;t be bought.",
+      pkgTagline: "&mdash; Exclusive Offer &mdash;",
+      pkgHeading: "Friday &amp; Saturday Packages",
+      altPkgFri: "Friday packages at LAF — Package 1 for 4/6 people: 2 bottles, 10 mixers, 1 platter of choice, regular price €310, special price €250. Package 2 for 8 people: 4 bottles, 20 mixers, 2 platters, regular price €620, special price €480. Premium package: 2 bottles (Grey Goose vodka, Gentleman Jack whiskey), 10 mixers, 1 platter, regular price €410, special price €370.",
+      altPkgSat: "Saturday premium package at LAF — 1 platter of choice, 2 bottles of choice (Grey Goose vodka, Gentleman Jack whiskey), 10 mixers, regular price €410, special price €370.",
+      pkgCtaText: "To book a package, reach out via WhatsApp or phone.",
+      btnBookTable: "Book a Table",
+      servTagline: "&mdash; What We Offer &mdash;",
+      servHeading: "&ldquo;An experience in five chapters.&rdquo;",
+      svcParty: "Energy that starts at 10 PM and doesn&rsquo;t stop until sunrise. Music, lights, and a crowd that knows how to dance.",
+      svcBottle: "VIP treatment for special nights. Pick your bottle and leave the rest to us.",
+      svcFood: "A restaurant menu that serves those who come hungry too. Food available throughout the night.",
+      svcAnimTitle: "Entertainers",
+      svcAnim: "Our team makes sure the energy never drops. Sparkler shows and real entertainment.",
+      svcPlace: "Trnjanska cesta 117. An interior that sets the stage for unforgettable nights.",
+      eventsTagline: "&mdash; Venue Rental &mdash;",
+      eventsHeading: "&ldquo;Your event, our space.&rdquo;",
+      altEvents: "LAF venue rental for private events and gatherings — festive ambiance tailored to your wishes, customized menus, fully equipped bar, live music or DJ, free parking, professional staff, cloakroom and professional sound, smaller or larger groups welcome, space for up to 350 guests.",
+      eventsCtaText: "For venue rental inquiries, reach out via WhatsApp or phone.",
+      btnEventInquiry: "Event Inquiry",
+      onInstagram: "on Instagram",
+      ariaOpenInstagram: "Open LAF Instagram profile",
+      altGal2: "Sparkler show on the LAF dance floor",
+      altGal3: "Guests under purple club lighting",
+      altGal4: "Guests under magenta lighting at LAF",
+      altGal5: "Bottle service with sparklers and LED details",
+      altGal6: "Gold confetti at a club party",
+      altGal7: "Elegantly dressed guests at LAF",
+      altGal8: "LAF club interior with blue lighting effects",
+      altGal9: "Guests on a night out at LAF",
+      contactTagline: "&mdash; Reserve Your Night &mdash;",
+      contactSub: "Friday and Saturday. Doors open at 10 PM. Seats are limited.",
+      labelAddress: "Address",
+      labelPhone: "Phone",
+      viewPricelist: "View price list",
+      friSatLabel: "Friday and Saturday",
+      otherDaysClosedDash: "&mdash; other days closed",
+      btnCallBook: "Call to Book",
+      btnGoogleReserve: "Reserve via Google",
+      quickLinks: "Quick Links",
+      footerFri: "Friday: 22:00 &ndash; 04:00",
+      footerSat: "Saturday: 22:00 &ndash; 04:00",
+      footerOther: "Other days: closed",
+      footerDress: "Dress code: be chic &amp; elegant",
+      fixedCta: "Book Now"
+    };
+
+    var PAGE_TITLE_EN = "LAF Lost & Found | Restaurant & Nightclub Zagreb";
+    var PAGE_DESC_EN = "Restaurant and nightclub in Zagreb. Trnjanska cesta 117. Fridays and Saturdays 22:00–04:00. Discretion guaranteed. Reservations: +385 98 5555 11. Dress code: chic & elegant.";
+    var pageTitleHr = document.title;
+    var metaDesc = document.querySelector('meta[name="description"]');
+    var pageDescHr = metaDesc ? metaDesc.getAttribute('content') : '';
+
+    function applyLanguage(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        if (el.dataset.hrOrig === undefined) el.dataset.hrOrig = el.innerHTML;
+        var key = el.getAttribute('data-i18n');
+        el.innerHTML = (lang === 'en' && EN[key]) ? EN[key] : el.dataset.hrOrig;
+      });
+      document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+        if (el.dataset.hrAriaOrig === undefined) el.dataset.hrAriaOrig = el.getAttribute('aria-label') || '';
+        var key = el.getAttribute('data-i18n-aria');
+        el.setAttribute('aria-label', (lang === 'en' && EN[key]) ? EN[key] : el.dataset.hrAriaOrig);
+      });
+      document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
+        if (el.dataset.hrAltOrig === undefined) el.dataset.hrAltOrig = el.getAttribute('alt') || '';
+        var key = el.getAttribute('data-i18n-alt');
+        el.setAttribute('alt', (lang === 'en' && EN[key]) ? EN[key] : el.dataset.hrAltOrig);
+      });
+
+      document.documentElement.lang = lang === 'en' ? 'en' : 'hr';
+      document.body.classList.toggle('lang-en', lang === 'en');
+      document.title = lang === 'en' ? PAGE_TITLE_EN : pageTitleHr;
+      if (metaDesc) metaDesc.setAttribute('content', lang === 'en' ? PAGE_DESC_EN : pageDescHr);
+
+      document.querySelectorAll('.lang-switch button').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-lang-choice') === lang);
+      });
+
+      try { localStorage.setItem('laf_lang', lang); } catch (e) {}
+    }
+
+    function chooseLanguage(lang) {
+      applyLanguage(lang);
+      document.getElementById('langModal').classList.remove('open');
+    }
+
+    document.querySelectorAll('[data-lang-choice]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        chooseLanguage(btn.getAttribute('data-lang-choice'));
+      });
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem('laf_lang'); } catch (e) {}
+    if (saved === 'hr' || saved === 'en') {
+      applyLanguage(saved);
+    } else {
+      applyLanguage('hr');
+      document.getElementById('langModal').classList.add('open');
+    }
   })();
 
 </script>
