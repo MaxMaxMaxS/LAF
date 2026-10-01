@@ -28,6 +28,8 @@
   html {
     scroll-behavior: smooth;
     touch-action: pan-y;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   body {
@@ -38,6 +40,7 @@
     line-height: 1.7;
     overflow-x: hidden;
     touch-action: pan-y;
+    width: 100%;
   }
 
   ::selection { background: var(--gold); color: var(--black); }
@@ -583,7 +586,7 @@
   .packages-cta p { color: var(--muted); font-size: 15px; }
 
   /* ---------- Usluge ---------- */
-  .services { background: var(--black-soft); }
+  .services { background: var(--black-soft); overflow: hidden; }
   .services::before {
     content: '';
     position: absolute;
