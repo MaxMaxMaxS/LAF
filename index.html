@@ -25,7 +25,10 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    touch-action: pan-y;
+  }
 
   body {
     background: var(--black);
@@ -34,6 +37,7 @@
     font-weight: 300;
     line-height: 1.7;
     overflow-x: hidden;
+    touch-action: pan-y;
   }
 
   ::selection { background: var(--gold); color: var(--black); }
@@ -1421,6 +1425,24 @@
     ['touchstart', 'click', 'scroll'].forEach(function (evt) {
       document.addEventListener(evt, retryOnGesture, { once: true, passive: true });
     });
+  })();
+
+  // ---------- Blokiranje pinch/double-tap zooma (iOS ignorira meta viewport) ----------
+  (function () {
+    document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+    document.addEventListener('gesturechange', function (e) { e.preventDefault(); });
+    document.addEventListener('gestureend', function (e) { e.preventDefault(); });
+
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+
+    var lastTouchEnd = 0;
+    document.addEventListener('touchend', function (e) {
+      var now = Date.now();
+      if (now - lastTouchEnd <= 300) e.preventDefault();
+      lastTouchEnd = now;
+    }, { passive: false });
   })();
 
   // ---------- Jezik (HR / EN) ----------
